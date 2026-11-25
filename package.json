@@ -1,0 +1,28 @@
+{
+  "name": "bunki-hq",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Bunki, a talking-orb personal assistant, runs a small company of AI agents across your projects.",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --disable-warning=ExperimentalWarning src/core/*.test.ts",
+    "pc": "vite build && node --disable-warning=ExperimentalWarning src/server/server.ts",
+    "serve": "node --disable-warning=ExperimentalWarning src/server/server.ts"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  }
+}

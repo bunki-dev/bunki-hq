@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - name: Typecheck and build
+        run: npm run build
+      - name: Engine tests (agents, approvals, budgets, checkout)
+        run: npm test
+      - name: PC server starts and answers
+        run: |
+          BUNKI_HQ_HOME=$RUNNER_TEMP/hq HEARTBEAT_MINUTES=0 node --disable-warning=ExperimentalWarning src/server/server.ts &
+          for i in $(seq 1 20); do curl -sf localhost:4317/api/info && break; sleep 1; done
+          curl -sf -X POST localhost:4317/api/call -d '{"method":"chat","args":["add task: check the builds"]}' | grep -q '"assignee":"ops"\|Ops'
+          curl -s -X POST localhost:4317/api/call -H 'origin: https://example.com' -d '{"method":"reset","args":[]}' | grep -q Forbidden
